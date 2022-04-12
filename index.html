@@ -1,0 +1,85 @@
+<html>
+    <head>
+        <title>Music PLayer</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1, minimum-scale=1, height=device-height"/>
+        <meta http-equiv="Cache-control" content="no-cache">
+        <meta name="description" content="Page description"/>
+        <meta name="keywords" content="page, keywords"/>
+        <meta name="theme-color" content="#000000"/>
+        <meta name="copyright" content="Author"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="apple-mobile-web-app-status-bar-style" content="#000000"/>
+        <meta name="apple-mobile-web-app-title" content="Application Name"/>
+        <meta name="msapplication-TileImage" content="img/icon/144x144.png"/>
+        <meta name="msapplication-TileColor" content="#000000"/>
+        <script src="https://kit.fontawesome.com/de8c8e3719.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="css/main.css"/>
+    </head>
+    <body>
+        <div class="container">
+            <div class="player">
+                <div class="contentWrapper">
+                    <div class="slidecontainer">
+                      <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+                    </div>
+                    
+                    <div class="musicSwitch">
+                        <div class="icon-wrap">
+                            <span class="playList-open" title = "Плейлист"><i class="fa-solid fa-bars fa-2x" style="color: #b2b3aa"></i></span>
+                            <span class="fav-open" title = "Избраное"><i class="fa-solid fa-heart fa-2x" style="color: #b2b3aa"></i></span>
+                        </div>
+                        
+                    </div>
+                    <div class="s-modal"></div>
+                    <div id="jsAlbum">
+                        <div class="album _play">
+                            <div class="album__internal"></div>
+                        </div>
+                    </div>
+                    <div class="musicInfo">
+                        <marquee behavior="scroll" direction="left" scrollamount="5"><h1 class="musicInfo__name"></h1></marquee> 
+                        <h2 class="musicInfo__author"></h2>
+                    </div>
+                    <div class="musicTime">
+                        <p class="musicTime__current"></p>
+                        <p class="musicTime__last"></p>
+                    </div>
+                    <div class="musicBar" id="progress">
+                        <div class="musicBar__length" id="length">
+                            <div class="button musicBar__circle">
+                                <div class="musicBar__circlePoint"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="musicOrder">
+                        <div class="musicOrder__loop _loop" id="loop"></div>
+                        <div class="musicOrder__shuffle" id="shuffle"></div>
+                        <div class="fav-icon" id="fav"></div>
+                    </div>
+                    <div class="musicControl">
+                        <div class="button musicControl__backward" id="prev"></div>
+                        <div class="button musicControl__play _play" id="play"></div>
+                        <div class="button musicControl__forward" id="next"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="player fav">
+                <span class="clear">Очисить</span>
+                <div class="fav-close">X</div>
+                <div class="fav-text">
+                    
+                </div>
+            </div>
+
+            <div class="player fav playList">
+                <div class="fav-close playList-close">X</div>
+                <div class="playList-text">
+            </div>
+        </div>
+        <script src="js/main1.js"></script>
+
+
+    </body>
+</html>
