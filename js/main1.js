@@ -210,7 +210,6 @@
         if (e.tagName !== "A") {
             sModal.style.display = "none";
         }
-        console.dir(e)
     });
 
 
@@ -222,39 +221,37 @@
     }
 
 //keyborad
-document.addEventListener('keydown', (e) => {
-    let a = document.getElementById(currentAudio);
-    
-    //PLAY\PAUSE
-    if (e.code === 'Space') {
-        if (a.paused) {
-            a.play();
-            play();
-            playBtn.classList.remove("_play");
-        } else {
-            a.pause();
-            playBtn.classList.remove("_play");
-            play();
+    document.addEventListener('keydown', (e) => {
+        let a = document.getElementById(currentAudio);
+        
+        //PLAY\PAUSE
+        if (e.code === 'Space') {
+            if (a.paused) {
+                a.play();
+                play();
+                playBtn.classList.remove("_play");
+            } else {
+                a.pause();
+                playBtn.classList.remove("_play");
+                play();
+            }
         }
-    }
 
     //SWITCH TARCK
-    if (e.code === "KeyX") {
-        nextMusic("next");
-    } else if (e.code === "KeyZ") {
-        nextMusic("prev");
-    }
+        if (e.code === "KeyX") {
+            nextMusic("next");
+        } else if (e.code === "KeyZ") {
+            nextMusic("prev");
+        }
 
     // VOLUME CHANGE
-    if (e.code === "ArrowUp" && (e.ctrlKey || e.metaKey)) {
-        a.volume < 0.97 ? a.volume += 0.02 : a.volume = 1;
-        slider.valueAsNumber = a.volume * 100;
-        console.log(a.volume)
-    } else if (e.code === "ArrowDown" && (e.ctrlKey || e.metaKey)) {
-        a.volume > 0.03 ? a.volume -= 0.02 : a.volume = 0;
-        slider.valueAsNumber = a.volume * 100;
-        console.log(a.volume)
-    }
+        if (e.code === "ArrowUp" && (e.ctrlKey || e.metaKey)) {
+            a.volume < 0.97 ? a.volume += 0.02 : a.volume = 1;
+            slider.valueAsNumber = a.volume * 100;
+        } else if (e.code === "ArrowDown" && (e.ctrlKey || e.metaKey)) {
+            a.volume > 0.03 ? a.volume -= 0.02 : a.volume = 0;
+            slider.valueAsNumber = a.volume * 100;
+        }
 })
 
 
@@ -313,7 +310,6 @@ document.addEventListener('keydown', (e) => {
         leftTimeIndicator.innerHTML = ("0" + leftMinute).substr(-2) + ":" + ("0" + leftSecond).substr(-2);
     //set time bar
         progressBar.style.width = percentage * 100 + "%";
-        // console.log("current time is ==>>> -_- " + audio.currentTime + " -_-");
     }
 
     function showTime() {
@@ -338,6 +334,7 @@ document.addEventListener('keydown', (e) => {
             init();
         }
         localStorage.setItem("NID", currentId);
+        matchElem();
     }
 
 // STARTING A RANDOM TRACK
@@ -382,6 +379,7 @@ document.addEventListener('keydown', (e) => {
         init();
         mediaType();
         document.getElementById(currentAudio).play();
+        matchElem();
     }
 
 // THE PLAYBACK MODE OF THE TRACK
@@ -395,7 +393,6 @@ document.addEventListener('keydown', (e) => {
             e.target.classList.add("_loop");
             audio.loop = false;
             audio.onended = e => goToNextMusic();
-            console.log(isLoop, loopOne);
 
         } else if (isLoop && !loopOne) {
             isLoop = true;
@@ -404,7 +401,6 @@ document.addEventListener('keydown', (e) => {
             e.target.classList.add("_repeat");
             audio.loop = true;
             audio.onended = e => goToNextMusic();
-            console.log(isLoop, loopOne);
 
         } else {
             isLoop = false;
@@ -413,7 +409,6 @@ document.addEventListener('keydown', (e) => {
             e.target.classList.add("_off");
             audio.loop = false;
             audio.onended = e => stopMusic();
-            console.log(isLoop, loopOne);
         }
     }
 
@@ -439,6 +434,7 @@ document.addEventListener('keydown', (e) => {
         albumClass.classList = (list[currentId].class);
         let newId = currentId + 1;
         title.innerHTML = newId + '.  ' + list[currentId].title;
+        title.dataset.idForList = currentId; 
         author.innerHTML = list[currentId].author;
 
         //set current time
@@ -464,18 +460,36 @@ document.addEventListener('keydown', (e) => {
 
 //playLIST
     const playList = document.querySelector(".playList"),
-    listText = document.querySelector(".playList-text"),
-    listClose = document.querySelector(".playList-close");
-    listOpen = document.querySelector(".playList-open");
+        listText = document.querySelector(".playList-text"),
+        listClose = document.querySelector(".playList-close"),
+        listOpen = document.querySelector(".playList-open");
+
+    renderText(listText, 'List', 1);
+
+    function matchElem () {
+        let listOf = listText.querySelectorAll('p')
+        listOf.forEach((elem) => {
+            if (elem.dataset.id === title.dataset.idForList) {
+                elem.classList.add('active_track');
+                elem.scrollIntoView({
+                    block: "center",
+                    behavior: "smooth"
+                })
+            }
+
+            if (elem.dataset.id !== title.dataset.idForList) {
+                elem.classList.remove('active_track');
+            }
+        })
+    }
 
     listOpen.addEventListener("click", () => {
-        renderText(listText, 'List', 1);
         playList.style.display = "block";
+        matchElem();
     });
 
     listClose.addEventListener("click", () => {
         playList.style.display = "none";
-        listText.innerHTML = "";
     });
 
     playList.addEventListener('click', (e) => {
@@ -486,14 +500,16 @@ document.addEventListener('keydown', (e) => {
             localStorage.setItem("NID", e.dataset.id);
             title.innerHTML = e.innerHTML;
             playAfter();
-        }
+            title.dataset.idForList = currentId;
+            matchElem();
+        }  
     });
 
 //shufle List
-function shuffleList () {
-    for (let i = list.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1)); 
-        [list[i], list[j]] = [list[j], list[i]];
-      }
-}
+    function shuffleList () {
+        for (let i = list.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1)); 
+            [list[i], list[j]] = [list[j], list[i]];
+        }
+    }
 })();

@@ -1034,7 +1034,13 @@
     padding-left: 10px;
 }
 
-#track:hover {
+.active_track {
+    border-radius: 10px;
+    border: none;
+    box-shadow: -3px -3px 9px .1px #fff,3px 3px 9px .1px #ccc
+}
+
+#track:hover{
     border-radius: 10px;
     border: none;
     box-shadow: -3px -3px 9px .1px #fff,3px 3px 9px .1px #ccc
